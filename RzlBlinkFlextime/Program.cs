@@ -27,7 +27,13 @@ namespace RzlBlinkFlextime
             {
                 p.CheckFlextime();
                 System.Threading.Thread.Sleep(5000);
-            } while (Console.ReadKey(true).Key != ConsoleKey.Escape);
+
+                if (Console.KeyAvailable)
+                {
+                    ConsoleKeyInfo key = Console.ReadKey(true);
+                    if (key.Key == ConsoleKey.Escape) break;
+                }
+            } while (true);
 
             p.WriteInfoMessage("Programm beendet");
             p.blinkOneHandler.Dispose();
