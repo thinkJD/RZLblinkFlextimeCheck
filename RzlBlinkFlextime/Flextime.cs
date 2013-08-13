@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace RzlBlinkFlextime
 {
@@ -30,5 +26,11 @@ namespace RzlBlinkFlextime
             TimeSpan Result = DateTime.Now - WorkStart;
             return (Result.TotalMinutes >= (totalMinutesPerDay + daylyExtraTime)) ? true : false;
         }
+
+        public string EndTime(DateTime WorkStart)
+        {
+            return WorkStart.AddMinutes(totalMinutesPerDay).ToString("HH:mm:ss");
+        }
+
     }
 }

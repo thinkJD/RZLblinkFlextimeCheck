@@ -51,8 +51,8 @@ namespace RzlBlinkFlextime
             WriteInfoMessage(string.Format("RZL-Blink mit ID {0} gefunden.", blinkOneHandler.ID));
 
             flextime = new Flextime(
-                int.Parse(settings.getValue("Flextime", "HoursToWork")),
-                int.Parse(settings.getValue("Flextime", "OffsetComeTime")),
+                int.Parse(settings.getValue("Flextime", "MinutesToWork")),
+                int.Parse(settings.getValue("Flextime", "Offset")),
                 int.Parse(settings.getValue("Flextime", "DaylyGrow")));
 
             lastSet = DateTime.Parse(settings.getValue("Genaral", "FirstRunThisDay"));
@@ -66,15 +66,17 @@ namespace RzlBlinkFlextime
                 lastSet.Day == DateTime.Now.Day)
             {
                 if (!flextime.TimeToGo(lastSet)) blinkOneHandler.SetColorTo(Color.Firebrick);
+
                 if (flextime.TimeToGo(lastSet) && !flextime.ExtraTimeReached(lastSet))
                 {
                     blinkOneHandler.SetColorTo(Color.GreenYellow);
                     WriteInfoMessage("Kannst gehen, Pflicht erfüllt");
                 }
+
                 if (flextime.ExtraTimeReached(lastSet))
                 {
                     blinkOneHandler.SetColorTo(Color.ForestGreen);
-                    WriteInfoMessage(@"\o/ Yeah! Du hast deine Wunschzeit heute aufgebaut!");
+                    WriteInfoMessage(@"\o/ Yeah! Du hast deine Wunschzeit für heute aufgebaut!");
                 }
             }
             else
@@ -85,6 +87,7 @@ namespace RzlBlinkFlextime
                 //A new work day. Set the color to red.
                 blinkOneHandler.SetColorTo(Color.Firebrick);
                 WriteInfoMessage("Moin! Schönen Arbeitstag.");
+                WriteInfoMessage(string.Format("Du bist um {0} gekommen und kannst um {1} gehen", lastSet.ToString("HH:mm:ss"), flextime.EndTime(lastSet)));
             }
         }
 
