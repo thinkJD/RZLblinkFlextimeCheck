@@ -89,6 +89,7 @@ namespace RzlBlinkFlextime
             {
                 //if not, set the new date.
                 settings.setValue("Genaral", "FirstRunThisDay", DateTime.Now.ToString());
+                lastSet = DateTime.Now;
                 settings.Save();
                 //A new work day. Set the color to red.
                 blinkOneHandler.SetColorTo(Color.Firebrick);
@@ -97,10 +98,15 @@ namespace RzlBlinkFlextime
             }
         }
 
+        private string lastInfoMessage;
         private void WriteInfoMessage(string Message)
         {
-            Console.WriteLine(Message);
-            log.Info(Message);
+            if (!Message.Equals(lastInfoMessage))
+            {
+                lastInfoMessage = Message;
+                Console.WriteLine(Message);
+                log.Info(Message);
+            }
         }
 
     }
